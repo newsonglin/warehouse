@@ -1,6 +1,7 @@
 package com.lin;
 
 import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 
@@ -9,9 +10,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Main class to perform photo operations
@@ -25,15 +28,13 @@ public class PhotoMaster {
     /**
      * 处理此目录下所有照片，把它们按目录分类
      *
-     * @param dirToBeProcessed
+     * @param dirToBeProcessed directory to be processed
      */
     private void process(String dirToBeProcessed) {
         Path filePath = new File(dirToBeProcessed).toPath();
         try {
             Files.list(filePath).forEach(path -> {
-                if(Files.isDirectory(path)){
-                    //We don't care about directory now
-                }else{
+                if (!Files.isDirectory(path)) {
                     groupByFile(path);
                 }
             });
@@ -51,11 +52,14 @@ public class PhotoMaster {
             File file = path.toFile();
 
             //Get photo taken date
+            Date date = getTakenDate(file);
+            if(date==null){//taken date is null
+               date=getCreationDate(file);
+            }
 
-
-            Metadata metadata = ImageMetadataReader.readMetadata(file);
-            ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
-            Date date = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL, TimeZone.getTimeZone("GMT+8:00"));
+            if(date==null) {
+                date = new Date(file.lastModified());//last modified date
+            }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             String targetFolderName = sdf.format(date);
@@ -70,7 +74,7 @@ public class PhotoMaster {
 
 
             Files.move(path, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Move "+file.getName()+" to target folder"+targetPath.toString());
+            System.out.println("移动文件 "+file.getName()+" 到目录 "+targetPath.toString());
 
         } catch (Exception e) {
             System.out.println("Move file failed!");
@@ -79,9 +83,60 @@ public class PhotoMaster {
 
     }
 
+    /**
+     * 获取照片拍摄日期
+     * @param file  当前照片
+     * @return  照片拍摄日期
+     * @throws ImageProcessingException 照片处理错误
+     * @throws IOException 照片读取错误
+     */
+    private Date getTakenDate(File file) {
+        try {
+            Metadata metadata = ImageMetadataReader.readMetadata(file);
+            ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
+            return directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL, TimeZone.getTimeZone("GMT+8:00"));
+        }catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("未能获取照片"+file.getName()+"的拍摄日期, 将会使用创建日期代替 ");
+            return null;
+        }
+    }
+
+    /**
+     * 获取文件创建日期
+     * @param file 当前文件
+     * @return 文件创建日期
+     */
+    private Date getCreationDate(File file) {
+        Date creationDate = null;
+        Path filePath = file.toPath();
+
+        BasicFileAttributes attributes = null;
+        try {
+            attributes = Files.readAttributes(filePath, BasicFileAttributes.class);
+        } catch (IOException exception) {
+            System.out.println("Exception handled when trying to get file " + "attributes: " + exception.getMessage());
+            return creationDate;
+        }
+        long milliseconds = attributes.creationTime().to(TimeUnit.MILLISECONDS);
+        if ((milliseconds > Long.MIN_VALUE) && (milliseconds < Long.MAX_VALUE)) {
+            creationDate = new Date(attributes.creationTime().to(TimeUnit.MILLISECONDS));
+
+
+        }
+
+        return creationDate;
+    }
+
     public static void main(String[] args) {
 
-        String dirToBeProcessed = args.length > 0 ? args[0] : "";
+        String dirToBeProcessed = args.length > 0 ? args[0] : null;
+
+        if(dirToBeProcessed==null ||"".equals(dirToBeProcessed)){
+            System.out.println(" 参数不正确，后面必须跟一个有效文件夹路径");
+            System.out.println(" 例如 PhotoMaster c:\\abc\\");
+            System.exit(1);
+        }
 
         //check directory is valid or not
         Path filePath = new File(dirToBeProcessed).toPath();
