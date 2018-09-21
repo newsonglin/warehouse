@@ -2,8 +2,10 @@ package com.lin;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
+import com.drew.lang.GeoLocation;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
+import com.drew.metadata.exif.GpsDirectory;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +52,12 @@ public class PhotoMaster {
     private void groupByFile(Path path) {
         try {
             File file = path.toFile();
+
+            //Get photo taken place;
+//            GeoLocation location=getTakenPlace(file);
+//            if(location!=null) {
+//                System.out.println("Longitude:" + location.getLongitude() + " | Latitude:" + location.getLatitude());
+//            }
 
             //Get photo taken date
             Date date = getTakenDate(file);
@@ -100,6 +108,30 @@ public class PhotoMaster {
             System.out.println("未能获取照片"+file.getName()+"的拍摄日期, 将会使用创建日期代替 ");
             return null;
         }
+    }
+
+
+    /**
+     * 获取照片拍摄地点
+     * @param file  当前照片
+     * @return  照片拍摄地点
+     * @throws ImageProcessingException 照片处理错误
+     * @throws IOException 照片读取错误
+     */
+    private GeoLocation getTakenPlace(File file) {
+        try {
+            Metadata metadata = ImageMetadataReader.readMetadata(file);
+            GpsDirectory directory = metadata.getFirstDirectoryOfType(GpsDirectory.class);
+            if(directory!=null) {
+                return directory.getGeoLocation();
+            }
+
+        }catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("未能获取照片"+file.getName()+"的拍摄地点");
+            return null;
+        }
+        return null;
     }
 
     /**
