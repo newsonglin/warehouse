@@ -1,0 +1,7 @@
+title APP=======${branch}=======APP======${branch}===========APP=======${branch}=================APP====${branch}=========APP
+cd /d ${tomcat_app_dir}
+rd logs /S /Q
+md logs
+
+cd /d ${tomcat_app_dir}/bin
+catalina run

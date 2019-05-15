@@ -1,0 +1,20 @@
+@echo on
+    set JAVA_HOME=${JAVA_HOME}
+    set JRE_HOME=${JAVA_HOME}\jre
+    set ANT_HOME=${ANT_HOME}
+    set src_root=${branch_dir}\src
+
+echo =========================================
+echo ==========clean all of them==============
+echo =========================================
+    echo %JAVA_HOME%
+    cd /d %src_root%
+    call mvn --version
+    call mvn clean -Denv=aaa-dev
+
+echo =========================================
+echo ==========Perform full build=============
+echo =========================================
+    echo %JAVA_HOME%
+    cd /d %src_root%
+    call mvn install -fn -DnoEar=true -Dprod.build=false -Ddeploy-db -Dmaven.test.skip=true -Dmaven.test.error.ignore=true -Dmaven.test.failure.ignore=true -T 4

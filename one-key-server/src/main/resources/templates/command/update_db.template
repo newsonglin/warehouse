@@ -1,0 +1,13 @@
+@echo on
+    set src_root=${branch_dir}\src
+    set JAVA_HOME=${JAVA_HOME}
+    set JRE_HOME=${JAVA_HOME}\jre
+    set ANT_HOME=${ANT_HOME}
+
+echo =========================================
+echo ======execute db update scripts==========
+echo =========================================
+	call ant -version
+	cd /d %src_root%\applications\aaa-deploy\target\aaa-deploy-dist
+    set NLS_LANG=AMERICAN_AMERICA.AL32UTF8
+	call ant db.liquibase -Djdbc.driverClassName=oracle.jdbc.driver.OracleDriver -DdbUrl=jdbc:oracle:thin:@${db_server}:${db_port}:${db_sid} -DdbLogin=${db_user} -DdbPassword=${db_pass}

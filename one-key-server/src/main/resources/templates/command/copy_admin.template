@@ -1,0 +1,13 @@
+@echo on
+    set src_root=${branch_dir}\src
+
+echo ==================================================
+echo ==================Copy admin =====================
+echo ==================================================
+    cd /d ${admin_dir}
+    rd aaa-admin /S /Q
+    md aaa-admin
+    cd /d ${admin_dir}/aaa-admin
+    xcopy %src_root%\applications\aaa-app\target\aaa-app /Y /E
+
+

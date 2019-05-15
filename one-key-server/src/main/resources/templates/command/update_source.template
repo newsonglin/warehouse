@@ -1,0 +1,6 @@
+@echo on
+    set src_root=${branch_dir}\src
+    cd /d %src_root%
+    ${SVN_HOME}\bin\svn cleanup
+    cd /d %src_root%
+    ${SVN_HOME}\bin\svn up

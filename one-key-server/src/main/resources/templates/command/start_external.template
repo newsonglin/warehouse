@@ -1,0 +1,8 @@
+echo on
+title External======${branch}========External======${branch}===========External========${branch}================External======${branch}=======External
+cd /d ${tomcat_external_dir}
+rd logs /S /Q
+md logs
+
+cd /d ${tomcat_external_dir}/bin
+catalina run

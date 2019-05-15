@@ -1,0 +1,6 @@
+@echo on
+    set src_root=${branch_dir}\src
+    set JAVA_HOME=${JAVA_HOME}
+    set JRE_HOME=${JAVA_HOME}\jre
+	cd /d %src_root%\applications\aaa-deploy\target\aaa-deploy-dist
+    call ant products -DdeployRemoteInvocationTimeout=1200000 -DappUrl=http://localhost:9090/aaa-admin -DappLogin=qa -DappPassword=qa -DfailOnError=false -Ddelete=true

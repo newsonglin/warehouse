@@ -1,0 +1,7 @@
+echo on
+title ADMIN========${branch}==========ADMIN============${branch}=================ADMIN======${branch}=======ADMIN
+cd /d ${tomcat_admin_dir}
+rd logs /S /Q
+md logs
+cd /d ${tomcat_admin_dir}/bin
+catalina run
