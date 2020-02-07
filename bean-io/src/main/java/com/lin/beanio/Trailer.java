@@ -1,7 +1,7 @@
 package com.lin.beanio;
 
 /**
- * Trailer in tower project.
+ * Trailer in lin project.
  *
  * @author Songlin.Li <songlin.li@eisgroup.com>
  * @since 2018/9/21

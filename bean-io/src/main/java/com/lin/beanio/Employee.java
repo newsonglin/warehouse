@@ -3,7 +3,7 @@ package com.lin.beanio;
 import java.util.Date;
 
 /**
- * Employee in tower project.
+ * Employee in lin project.
  *
  * @author Songlin.Li <songlin.li@eisgroup.com>
  * @since 2018/9/21

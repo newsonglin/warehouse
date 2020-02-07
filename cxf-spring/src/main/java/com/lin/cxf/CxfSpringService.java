@@ -8,7 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 /**
- * CxfSpringService in tower project.
+ * CxfSpringService in lin project.
  *
  * @author Songlin.Li <songlin.li@eisgroup.com>
  * @since 2019/5/16
