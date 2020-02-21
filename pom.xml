@@ -17,6 +17,7 @@
         <module>tianji-horse</module>
         <module>cxf-spring</module>
         <module>camel</module>
+        <module>json</module>
     </modules>
     
 	<dependencies>
