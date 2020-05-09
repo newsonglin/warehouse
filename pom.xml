@@ -18,6 +18,8 @@
         <module>cxf-spring</module>
         <module>camel</module>
         <module>json</module>
+        <module>encryption</module>
+        <module>soap</module>
     </modules>
     
 	<dependencies>
