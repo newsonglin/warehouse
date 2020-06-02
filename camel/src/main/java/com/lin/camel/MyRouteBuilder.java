@@ -11,16 +11,24 @@ import org.apache.camel.builder.RouteBuilder;
 public class MyRouteBuilder extends RouteBuilder {
     @Override
     public void configure() throws Exception {
-        from("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}")
-                .process(new MyLogProcessor())
-                .bean(new MyTransformer(), "convert")
-                .to("file://d:/tmp/out");
-
-
-
-/*        //route for SFTP setting， you can verify with this
         from("direct:liSonglin")
-                .pollEnrich("sftp://dev2gliftp01-sftp.eqxdev.exigengroup.com:22/upload/cluster/DHMO/filedrop?username=glic&password=XXXXXXXXXXXXXX&include=^CRJ[C,M]06\\.\\d{8}.TXT", 5000)
+                .log("Start here.......")
+        .from("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}")
+                .process(new MyLogProcessor());
+
+//                .bean(new MyTransformer(), "convert")
+//                .choice()
+//                    .when(body().contains("HELLO")).to("file://d:/tmp/out")
+//                    .when(body().contains("LIN")).to("file://d:/tmp/in/worked/")
+//                    .otherwise().log("Do Nothing!!!, just exist")
+//                .end();
+
+
+
+
+        //route for SFTP setting， you can verify with this
+/*        from("direct:liSonglin")
+                .pollEnrich("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}", 0)
                 .process(new MyLogProcessor());*/
 
     }

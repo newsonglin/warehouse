@@ -20,6 +20,8 @@
         <module>json</module>
         <module>encryption</module>
         <module>soap</module>
+        <module>transaction</module>
+        <module>zip</module>
     </modules>
     
 	<dependencies>
