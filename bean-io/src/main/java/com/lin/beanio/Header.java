@@ -19,4 +19,12 @@ public class Header {
     public void setRecordType(String recordType) {
         this.recordType = recordType;
     }
+
+    public Date getFileDate() {
+        return fileDate;
+    }
+
+    public void setFileDate(Date fileDate) {
+        this.fileDate = fileDate;
+    }
 }
