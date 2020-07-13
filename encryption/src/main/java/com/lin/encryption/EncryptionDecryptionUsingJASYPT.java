@@ -4,7 +4,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 public class EncryptionDecryptionUsingJASYPT {
 
-    private static String mpCryptoPassword = "HOTAI";
+    private static String mpCryptoPassword = "www.songlin.li.com";
 
     public static void main(String[] args) {
 

@@ -22,7 +22,9 @@
         <module>soap</module>
         <module>transaction</module>
         <module>zip</module>
+
         <module>proxy</module>
+        <module>cors-app</module>
     </modules>
     
 	<dependencies>
