@@ -26,18 +26,9 @@ public class MyLogProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) throws Exception {
-
-
-
         System.out.println("size is #" +exchange.getProperty("CamelBatchSize"));
         exchange.getIn().getHeaders().put("size", exchange.getProperty("CamelBatchSize"));
-        System.out.println("Processing message with body    "+exchange.getIn().getBody(String.class));
+//        System.out.println("Processing message with body    "+exchange.getIn().getBody(String.class));
         System.out.println("Processing message file name=="+ exchange.getIn().getHeader(Exchange.FILE_NAME));
     }
-
-
-
-
-
-
 }

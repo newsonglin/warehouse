@@ -14,9 +14,9 @@ public class LinSOAPPublisher {
 
     public static void main(String[] args) {
 
-        System.out.println("11111111111");
+        System.out.println("Start deploying soap server...");
         Endpoint.publish("http://localhost:9999/ws/soap", new LinSOAPServiceImpl());
-        System.out.println("2222222222");
+        System.out.println("Soap server deployed successfully");
 
     }
 

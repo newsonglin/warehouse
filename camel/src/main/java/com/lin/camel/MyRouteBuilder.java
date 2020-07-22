@@ -13,6 +13,8 @@ public class MyRouteBuilder extends RouteBuilder {
     public void configure() throws Exception {
         from("direct:liSonglin")
                 .log("Start here.......")
+
+
         .from("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}")
                 .process(new MyLogProcessor());
 

@@ -1,12 +1,20 @@
 package com.lin.proxy.handler;
 
+
+import sun.net.www.MessageHeader;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public  class ProxyHandler extends Thread {
-    public static final Pattern CONNECT_PATTERN = Pattern.compile("CONNECT (.+):(.+) HTTP/(1\\.[01])",  Pattern.CASE_INSENSITIVE);
+public class ProxyHandler extends Thread {
+    public static final Pattern CONNECT_PATTERN = Pattern.compile("CONNECT (.+):(.+) HTTP/(1\\.[01])", Pattern.CASE_INSENSITIVE);
     private final Socket clientSocket;
     private boolean previousWasR = false;
 
@@ -18,23 +26,23 @@ public  class ProxyHandler extends Thread {
     public void run() {
         try {
             String request = readLine(clientSocket);
-            System.out.println(request);
+            System.out.println("========================="+request);
             Matcher matcher = CONNECT_PATTERN.matcher(request);
             if (matcher.matches()) {
                 String header;
                 do {
                     header = readLine(clientSocket);
                 } while (!"".equals(header));
-                OutputStreamWriter clientOutputStreamWriter = new OutputStreamWriter(clientSocket.getOutputStream(),"ISO-8859-1");
+                OutputStreamWriter clientOutputStreamWriter = new OutputStreamWriter(clientSocket.getOutputStream(), "ISO-8859-1");
 
                 final Socket forwardSocket;
                 try {
                     //This is target web socket
                     forwardSocket = new Socket(matcher.group(1), Integer.parseInt(matcher.group(2)));
 
-                    System.out.println("forwardSocket==========server======"+matcher.group(1));
-                    System.out.println("forwardSocket==========port======"+matcher.group(2));
-                    System.out.println("forwardSocket================"+forwardSocket);
+                    System.out.println("forwardSocket==========server======" + matcher.group(1));
+                    System.out.println("forwardSocket==========port======" + matcher.group(2));
+                    System.out.println("forwardSocket================" + forwardSocket);
                 } catch (IOException | NumberFormatException e) {
                     e.printStackTrace();  // TODO: implement catch
 
@@ -61,7 +69,6 @@ public  class ProxyHandler extends Thread {
                         }
                     };
                     remoteToClient.start();
-
 
 
                     //Current main thread, transfer client request to target web server
@@ -94,21 +101,105 @@ public  class ProxyHandler extends Thread {
                 } finally {
                     forwardSocket.close();
                 }
+            } else {
+                processHttp(request);
             }
-        } catch (IOException e) {
-            e.printStackTrace();  // TODO: implement catch
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 clientSocket.close();
             } catch (IOException e) {
-                e.printStackTrace();  // TODO: implement catch
+                e.printStackTrace();
             }
+        }
+    }
+
+
+    /**
+     * proxy http request from client side.
+     */
+    private void processHttp(String requestLine) throws Exception {
+
+        this.clientSocket.setSoTimeout(2000);
+
+        // retrieve the host and port info from the status-line
+        InetSocketAddress serverAddr = getConnectInfo(requestLine);
+        Socket serverSocket = new Socket(serverAddr.getAddress(),  serverAddr.getPort());
+
+        Forwarder clientFW = new Forwarder(clientSocket.getInputStream(),
+                serverSocket.getOutputStream());
+        Thread clientForwarderThread = new Thread(clientFW, "ClientForwarder");
+        clientForwarderThread.start();
+        send200(clientSocket);
+        Forwarder serverFW = new Forwarder(serverSocket.getInputStream(),
+                clientSocket.getOutputStream());
+        serverFW.run();
+        clientForwarderThread.join();
+
+    }
+    private void send200(Socket clientSocket) throws IOException {
+        OutputStream out = clientSocket.getOutputStream();
+        PrintWriter pout = new PrintWriter(out);
+
+        pout.println("HTTP/1.1 200 OK");
+        pout.println();
+        pout.flush();
+    }
+
+
+    /* Reads from the given InputStream and writes to the given OutputStream */
+    static class Forwarder implements Runnable
+    {
+        private final InputStream in;
+        private final OutputStream os;
+
+        Forwarder(InputStream in, OutputStream os) {
+            this.in = in;
+            this.os = os;
+        }
+
+        @Override
+        public void run() {
+            try {
+                byte[] ba = new byte[1024];
+                int count;
+                while ((count = in.read(ba)) != -1) {
+                    os.write(ba, 0, count);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /*
+     * This method retrieves the hostname and port of the tunnel destination
+     * from the request line.
+     * @param connectStr
+     *        of the form: <i>CONNECT server-name:server-port HTTP/1.x
+     */
+    static InetSocketAddress getConnectInfo(String connectStr)    throws Exception
+    {
+        try {
+            int starti = connectStr.indexOf(' ');
+            int endi = connectStr.lastIndexOf(' ');
+            String urlStr = connectStr.substring(starti+1, endi).trim();
+            URL url = new URL(urlStr);
+            String host = url.getHost();
+            int port = url.getPort();
+            System.out.println("name=="+host);
+            System.out.println("port=="+port);
+            return new InetSocketAddress(host, port);
+        } catch (Exception e) {
+            System.out.println("Proxy received a request: " + connectStr);
+            throw e;
         }
     }
 
     /**
      * Forward data from socket to socket
-     * @param inputSocket the from socket
+     *
+     * @param inputSocket  the from socket
      * @param outputSocket the to socket
      */
     private static void forwardData(Socket inputSocket, Socket outputSocket) {
@@ -139,12 +230,13 @@ public  class ProxyHandler extends Thread {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();  // TODO: implement catch
+            e.printStackTrace();
         }
     }
 
     /**
      * Read a line message from the target socket
+     *
      * @param socket the target socket to read message from
      * @return a string format of one line message
      * @throws IOException if read error occurs

@@ -20,30 +20,16 @@ public class MainApp {
 
 
     public static void main(String[] args) {
-
         MyRouteBuilder routeBuilder = new MyRouteBuilder();
         CamelContext ctx = new DefaultCamelContext();
-
         try {
-//            ctx.addRoutes(routeBuilder);
-
-            AtomicReference<String> size = new AtomicReference<>("");
-            ctx.addRoutes(new RouteBuilder() {
-                public void configure() {
-                    from("direct:liSonglin").log("start").
-                    from("file://d:/tmp/in/?noop=true")
-                            .process(exchange -> {
-                                System.out.println("size is #" + exchange.getProperty("CamelBatchSize"));
-                                size.set(String.valueOf(exchange.getProperty("CamelBatchSize")));
-
-                            }).log("aaa");
-                }
-            });
-
+            ctx.addRoutes(routeBuilder);
+//addRoutes(ctx);
             ctx.start();
-//            triggerRoute(ctx);
-            System.out.print("=====================" + size.get());
-            Thread.sleep(5 * 60 * 1000);
+            System.out.println("camel context will be started");
+            triggerRoute(ctx);
+            Thread.sleep( 60 * 1000);
+            System.out.println("camel context will be stopped after period of time");
             ctx.stop();
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,11 +37,37 @@ public class MainApp {
     }
 
 
+    /**
+     * Add a route to camel context dynamically
+     * @param ctx the camel runtime context
+     * @throws Exception if error occurs
+     */
+
+    private static void addRoutes(CamelContext ctx) throws Exception {
+        AtomicReference<String> size = new AtomicReference<>("");
+        ctx.addRoutes(new RouteBuilder() {
+            public void configure() {
+                from("direct:liSonglin").log("start").
+                        from("file://d:/tmp/in/?noop=true")
+                        .process(exchange -> {
+                            System.out.println("size is #" + exchange.getProperty("CamelBatchSize"));
+                            size.set(String.valueOf(exchange.getProperty("CamelBatchSize")));
+
+                        }).log("aaa");
+            }
+        });
+    }
+
+    /**
+     * Send message to route start(from) point to start route
+     * @param ctx the camel runtime context
+     */
     private static void triggerRoute(CamelContext ctx) {
         Exchange exchange = CamelContextHelper.getMandatoryEndpoint(ctx, "direct:liSonglin").createExchange(ExchangePattern.InOut);
+        System.out.println("Try to start router from point direct:liSonglin");
         Exchange out = ctx.createProducerTemplate().send("direct:liSonglin", exchange);
         System.out.println(out.getProperty("CamelBatchSize"));
-        out.getException().printStackTrace();
+//        out.getException().printStackTrace();
 
 //        ctx.createProducerTemplate().sendBody("direct:liSonglin", null);
 
