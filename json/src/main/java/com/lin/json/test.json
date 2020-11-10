@@ -1,0 +1,14 @@
+"mvpFee":[
+  {
+    "premiumCategoryType": "TPL",
+    "limit": 2000.0,
+    "premium": 1233.00,
+    "netPremium": 3655.88
+  },
+  {
+    "premiumCategoryType": "DTC",
+    "limit": 1000.0,
+    "premium": 2016.55,
+    "netPremium": 2333.88
+  }
+]

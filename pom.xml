@@ -56,6 +56,6 @@
         <spring-context.version>5.1.1.RELEASE</spring-context.version>
         <spring-web.version>5.1.1.RELEASE</spring-web.version>
         <xmpcore.version>6.1.10</xmpcore.version>
-		
+        <jackson.version>2.2.1</jackson.version>
 	</properties>
 </project>

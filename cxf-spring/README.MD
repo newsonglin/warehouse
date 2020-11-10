@@ -11,7 +11,21 @@
 
 #### 5. Access http://localhost:8080/
 
-#### 6. Access specify WS
 
+---
+### For server/service/producer
+#### 1. Access certain web service
+ 
 http://{hostname}:{port}/{Context Path}/{CXFServlet url-pattern in web.xml}/{address in jaxrs:sever configuration}/{service class @path}/{service method @path}
+      
+---
+### For client/consumer
+
+http://{hostname}:{port}/{Context Path}/{TestClientServlet url-pattern in web.xml} <br>
+Example: http://localhost:8080/test-client
+
+The client invoke flow:
+url(with test-client)-->TestClientServlet.doGet()-->load spring bean (beans.xml configured in context-param section of web.xml)
+-->jaxrsc:client（serviceClass）-->jaxrsc:client（address）->CxfSpringService
+
 

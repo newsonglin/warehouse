@@ -3,6 +3,10 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+    <display-name>Songlin-CXF-WS</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>WEB-INF/beans.xml</param-value>
@@ -18,6 +22,19 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/services/*</url-pattern>
     </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>TestClientServlet</servlet-name>
+        <display-name>Test Client Servlet</display-name>
+        <servlet-class>com.lin.cxf.servlet.TestClientServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestClientServlet</servlet-name>
+        <url-pattern>/test-client/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

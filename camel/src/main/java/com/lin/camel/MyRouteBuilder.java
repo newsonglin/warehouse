@@ -11,12 +11,12 @@ import org.apache.camel.builder.RouteBuilder;
 public class MyRouteBuilder extends RouteBuilder {
     @Override
     public void configure() throws Exception {
-        from("direct:liSonglin")
-                .log("Start here.......")
+//        from("direct:liSonglin")
+//                .log("Start here.......")
 
 
-        .from("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}")
-                .process(new MyLogProcessor());
+//        .from("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}")
+//                .process(new MyLogProcessor());
 
 //                .bean(new MyTransformer(), "convert")
 //                .choice()
@@ -29,9 +29,9 @@ public class MyRouteBuilder extends RouteBuilder {
 
 
         //route for SFTP setting， you can verify with this
-/*        from("direct:liSonglin")
+        from("direct:liSonglin")
                 .pollEnrich("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}", 0)
-                .process(new MyLogProcessor());*/
+                .process(new MyLogProcessor());
 
     }
 }

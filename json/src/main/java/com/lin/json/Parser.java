@@ -1,5 +1,6 @@
 package com.lin.json;
 
+import com.sun.deploy.util.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -15,8 +16,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 
 public class Parser {
 
@@ -62,10 +68,26 @@ public class Parser {
     );
 
     public static void main(String[] args) throws Exception {
-        for (int i = 0; i <urls.size() ; i++) {
-            printList(getResponse(urls.get(i)));
+//        for (int i = 0; i <urls.size() ; i++) {
+//            printList(getResponse(urls.get(i)));
+//        }
+
+//        System.out.println(UUID.randomUUID());
+//        String  aa=Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes());
+
+        for (int i=0;i<10;i++) {
+            UUID uuid=UUID.randomUUID();
+
+            ByteBuffer bb = ByteBuffer.wrap(new byte[16]);
+            bb.putLong(uuid.getMostSignificantBits());
+            bb.putLong(uuid.getLeastSignificantBits());
+            System.out.println(Base64.getEncoder().encodeToString(bb.array()));
         }
 
+
+        for (int i=0;i<10;i++) {
+            System.out.println(System.currentTimeMillis());
+        }
     }
 
     private static void printList(String json) throws JSONException {

@@ -1,13 +1,13 @@
 package com.lin.cxf;
 
+import com.lin.cxf.vo.Customer;
+import com.lin.cxf.vo.TestVO;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.crypto.dsig.XMLObject;
 import java.io.File;
 
 /**
@@ -20,6 +20,19 @@ import java.io.File;
 @Service
 @Path("/cxf-spring")
 public class CxfSpringService {
+
+    @POST
+    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/processCustomer")
+    public Response processCustomer(String body, @HeaderParam("requestHeader01") String requestHeader01, @HeaderParam("Accept") String accept){
+        System.out.println("The request header 'requestHeader01' value: " + requestHeader01);
+        System.out.println("The request header 'Accept' value: " + accept);
+        System.out.println(body);
+        String json ="{\"resultCode\":\"000\", \"resultMsg\":\"Hello World\", \"age\":"+12+"}";
+        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+    }
+
 
     @GET
     @Path("/reply/{input}")
