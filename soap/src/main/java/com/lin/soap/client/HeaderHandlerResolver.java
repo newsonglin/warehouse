@@ -1,10 +1,10 @@
 package com.lin.soap.client;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.ws.handler.Handler;
 import javax.xml.ws.handler.HandlerResolver;
 import javax.xml.ws.handler.PortInfo;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *

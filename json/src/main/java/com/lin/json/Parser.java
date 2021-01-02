@@ -1,6 +1,5 @@
 package com.lin.json;
 
-import com.sun.deploy.util.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
@@ -17,8 +16,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;

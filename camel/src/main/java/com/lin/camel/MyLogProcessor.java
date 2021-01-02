@@ -1,18 +1,9 @@
 package com.lin.camel;
 
 
-import jxl.Sheet;
-import jxl.Workbook;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.component.file.GenericFile;
-import org.apache.camel.component.file.GenericFileConverter;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**

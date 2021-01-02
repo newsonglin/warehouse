@@ -11,7 +11,7 @@ public class JDBCSQLServerConnection {
      */
     public static Connection getConnection() {
         if (_con == null) {
-            String dbURL = "jdbc:sqlserver://ibm06hotmssql01.ibm06.hotai.info:1433;database=APP05";
+            String dbURL = "jdbc:sqlserver://ibm06hotmssql01.ibm06.xxx.info:1433;database=APP05";
             String user = "APP05";
             String pass = "app05";
             try {

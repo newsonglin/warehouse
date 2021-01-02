@@ -1,33 +1,30 @@
 package com.lin.cxf.util;
 
-import com.lin.cxf.vo.Customer;
-import com.sun.xml.internal.ws.developer.Serialization;
-import org.apache.commons.lang3.SerializationUtils;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
-    public static void main(String[] args) {
-        Customer c = new Customer();
-        c.setAge(111);
-        c.setName("Hahaaa");
-        Customer c2 = new Customer();
-        c2.setAge(111);
-        c2.setName("Hahaaa");
+    public static void main(String[] args) throws Exception {
 
-        ArrayList<Customer> list = new ArrayList<>();
-        list.add(c);
-        list.add(c2);
+        String s = "李松林";
+        System.out.println(s.getBytes("GBK").length);
+        System.out.println(s.getBytes("Big5").length);
+        System.out.println(s.getBytes(StandardCharsets.UTF_8).length);
+        System.out.println(s.getBytes(StandardCharsets.UTF_16).length);
+        System.out.println(s.getBytes(StandardCharsets.ISO_8859_1).length);
 
-        byte[] bytes = SerializationUtils.serialize((Serializable) list);
+    }
 
-        Object o = SerializationUtils.deserialize(bytes);
 
-        if(o instanceof  Customer){
-            System.out.println(((Customer)o).getName());
+
+    /* s must be an even-length string. */
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
         }
+        return data;
     }
 }

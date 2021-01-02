@@ -25,6 +25,8 @@
 
         <module>proxy</module>
         <module>cors-app</module>
+        <module>mail</module>
+        <module>converter</module>
     </modules>
     
 	<dependencies>

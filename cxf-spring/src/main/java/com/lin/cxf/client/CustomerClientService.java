@@ -1,6 +1,5 @@
 package com.lin.cxf.client;
 
-import com.lin.cxf.vo.Customer;
 import com.lin.cxf.vo.CustomerResponse;
 import com.lin.cxf.vo.Headers;
 

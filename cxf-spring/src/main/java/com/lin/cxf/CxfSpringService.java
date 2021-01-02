@@ -1,13 +1,10 @@
 package com.lin.cxf;
 
-import com.lin.cxf.vo.Customer;
-import com.lin.cxf.vo.TestVO;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.crypto.dsig.XMLObject;
 import java.io.File;
 
 /**
@@ -49,7 +46,7 @@ public class CxfSpringService {
 
         final File f = new File(CxfSpringService.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
-        File file = new File(f.getAbsolutePath()+"/IntegrationIntroduction_ForHotai.pdf");
+        File file = new File(f.getAbsolutePath()+"/IntegrationIntroduction_Forxxx.pdf");
         return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" ) //optional
                 .build();

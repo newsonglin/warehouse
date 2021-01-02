@@ -1,12 +1,7 @@
 package com.lin.proxy.handler;
 
 
-import sun.net.www.MessageHeader;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;

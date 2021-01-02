@@ -1,7 +1,6 @@
 package com.lin.encryption;
 
 import org.apache.commons.codec.binary.Base64;
-import sun.nio.cs.UTF_32;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

@@ -6,8 +6,11 @@ package com.lin.beanio;
  * @author Songlin.Li <songlin.li@eisgroup.com>
  * @since 2018/9/21
  */
-import org.beanio.*;
-import java.io.*;
+
+import org.beanio.BeanReader;
+import org.beanio.StreamFactory;
+
+import java.io.File;
 
 public class BeanReaderExample {
     public static void main(String[] args) throws Exception {
