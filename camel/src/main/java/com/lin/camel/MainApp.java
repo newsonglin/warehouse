@@ -1,6 +1,7 @@
 package com.lin.camel;
 
 
+import com.google.common.collect.LinkedListMultimap;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.ExchangePattern;
@@ -27,7 +28,7 @@ public class MainApp {
 //addRoutes(ctx);
             ctx.start();
             System.out.println("camel context will be started");
-            triggerRoute(ctx);
+//            triggerRoute(ctx);
             Thread.sleep( 60 * 1000);
             System.out.println("camel context will be stopped after period of time");
             ctx.stop();
@@ -71,8 +72,14 @@ public class MainApp {
 
 //        ctx.createProducerTemplate().sendBody("direct:liSonglin", null);
 
-//        ctx.createProducerTemplate().sendBodyAndProperty("direct:liSonglin", ExchangePattern.InOut, "", "SEPOWER_PARAMETER", LinkedListMultimap.create());
+
+//        SourceDto body= new SourceDto();
+//        body.setCreateTime("hh");
+//        ctx.createProducerTemplate().sendBodyAndProperty("direct:liSonglin", ExchangePattern.InOut, body, "SEPOWER_PARAMETER", LinkedListMultimap.create());
     }
 
 
+
 }
+
+

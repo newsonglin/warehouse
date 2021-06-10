@@ -29,9 +29,17 @@ public class MyRouteBuilder extends RouteBuilder {
 
 
         //route for SFTP setting， you can verify with this
-        from("direct:liSonglin")
-                .pollEnrich("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}", 0)
+//        from("direct:liSonglin")
+//                .pollEnrich("file://d:/tmp/in/?move=./worked/${file:onlyname}_${date:now:yyyyMMddHHmmssSSS}", 0)
+//                .process(new MyLogProcessor());
+
+//        from("direct:liSonglin").log("start").
+                from("file://d:/tmp/in/?noop=true")
+//                        .process(new MyLogProcessor())
+                .to("atlasmap:atlasmap-mapping.adm")
+                        .to("file://d:/tmp/out/")
                 .process(new MyLogProcessor());
+
 
     }
 }
