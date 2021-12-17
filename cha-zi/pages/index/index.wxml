@@ -1,5 +1,0 @@
-<view class="cha" bindtap='forward'>
-    <view class="cha_logo">
-        <text class="cha_text">到底学没学过这个字？</text>
-    </view>
-</view>

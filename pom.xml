@@ -14,7 +14,6 @@
         <module>bean-io</module>		
         <module>one-key-server</module>
         <module>photo-master</module>
-        <module>tianji-horse</module>
         <module>cxf-spring</module>
         <module>camel</module>
         <module>json</module>
@@ -24,7 +23,6 @@
         <module>zip</module>
 
         <module>proxy</module>
-        <module>cors-app</module>
         <module>mail</module>
         <module>sandbox</module>
     </modules>
