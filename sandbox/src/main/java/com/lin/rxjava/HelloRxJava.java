@@ -23,5 +23,13 @@ public class HelloRxJava {
         source.map(s->s.toUpperCase()).subscribe(System.out::println);
 
 
+
+
+
+        Observable.just(1,2,3,4,5,6,7,8,9)
+        .scan((x,y)-> x+y).subscribe(System.out::println);
+
+
+
     }
 }
