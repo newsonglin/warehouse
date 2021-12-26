@@ -21,7 +21,7 @@ public class ProxyHandler extends Thread {
     public void run() {
         try {
             String request = readLine(clientSocket);
-            System.out.println("========================="+request);
+            System.out.println("=========================" + request);
             Matcher matcher = CONNECT_PATTERN.matcher(request);
             if (matcher.matches()) {
                 String header;
@@ -57,12 +57,7 @@ public class ProxyHandler extends Thread {
                     clientOutputStreamWriter.flush();
 
                     //Start another thread, transfer target web server response to client
-                    Thread remoteToClient = new Thread() {
-                        @Override
-                        public void run() {
-                            forwardData(forwardSocket, clientSocket);
-                        }
-                    };
+                    Thread remoteToClient = new Thread(() -> forwardData(forwardSocket, clientSocket));
                     remoteToClient.start();
 
 
@@ -76,12 +71,7 @@ public class ProxyHandler extends Thread {
                                 }
                                 forwardData(clientSocket, forwardSocket);
                             } else {
-                                if (!forwardSocket.isOutputShutdown()) {
-                                    forwardSocket.shutdownOutput();
-                                }
-                                if (!clientSocket.isInputShutdown()) {
-                                    clientSocket.shutdownInput();
-                                }
+                                shutDown(clientSocket,forwardSocket);
                             }
                         } else {
                             forwardData(clientSocket, forwardSocket);
@@ -90,7 +80,7 @@ public class ProxyHandler extends Thread {
                         try {
                             remoteToClient.join();
                         } catch (InterruptedException e) {
-                            e.printStackTrace();  // TODO: implement catch
+                            e.printStackTrace();
                         }
                     }
                 } finally {
@@ -120,19 +110,20 @@ public class ProxyHandler extends Thread {
 
         // retrieve the host and port info from the status-line
         InetSocketAddress serverAddr = getConnectInfo(requestLine);
-        Socket serverSocket = new Socket(serverAddr.getAddress(),  serverAddr.getPort());
+        Socket serverSocket = new Socket(serverAddr.getAddress(), serverAddr.getPort());
 
-        Forwarder clientFW = new Forwarder(clientSocket.getInputStream(),
-                serverSocket.getOutputStream());
+        Forwarder clientFW = new Forwarder(clientSocket.getInputStream(), serverSocket.getOutputStream());
         Thread clientForwarderThread = new Thread(clientFW, "ClientForwarder");
         clientForwarderThread.start();
         send200(clientSocket);
-        Forwarder serverFW = new Forwarder(serverSocket.getInputStream(),
-                clientSocket.getOutputStream());
+
+        Forwarder serverFW = new Forwarder(serverSocket.getInputStream(), clientSocket.getOutputStream());
         serverFW.run();
+
         clientForwarderThread.join();
 
     }
+
     private void send200(Socket clientSocket) throws IOException {
         OutputStream out = clientSocket.getOutputStream();
         PrintWriter pout = new PrintWriter(out);
@@ -144,46 +135,37 @@ public class ProxyHandler extends Thread {
 
 
     /* Reads from the given InputStream and writes to the given OutputStream */
-    static class Forwarder implements Runnable
-    {
+    static class Forwarder implements Runnable {
         private final InputStream in;
-        private final OutputStream os;
+        private final OutputStream out;
 
         Forwarder(InputStream in, OutputStream os) {
             this.in = in;
-            this.os = os;
+            this.out = os;
         }
 
         @Override
         public void run() {
-            try {
-                byte[] ba = new byte[1024];
-                int count;
-                while ((count = in.read(ba)) != -1) {
-                    os.write(ba, 0, count);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            readData(this.in, this.out);
         }
     }
+
     /*
      * This method retrieves the hostname and port of the tunnel destination
      * from the request line.
      * @param connectStr
      *        of the form: <i>CONNECT server-name:server-port HTTP/1.x
      */
-    static InetSocketAddress getConnectInfo(String connectStr)    throws Exception
-    {
+    static InetSocketAddress getConnectInfo(String connectStr) throws Exception {
         try {
-            int starti = connectStr.indexOf(' ');
-            int endi = connectStr.lastIndexOf(' ');
-            String urlStr = connectStr.substring(starti+1, endi).trim();
+            int startIndex = connectStr.indexOf(' ');
+            int endIndex = connectStr.lastIndexOf(' ');
+            String urlStr = connectStr.substring(startIndex + 1, endIndex).trim();
             URL url = new URL(urlStr);
             String host = url.getHost();
             int port = url.getPort();
-            System.out.println("name=="+host);
-            System.out.println("port=="+port);
+            System.out.println("name==" + host);
+            System.out.println("port==" + port);
             return new InetSocketAddress(host, port);
         } catch (Exception e) {
             System.out.println("Proxy received a request: " + connectStr);
@@ -200,35 +182,42 @@ public class ProxyHandler extends Thread {
     private static void forwardData(Socket inputSocket, Socket outputSocket) {
         try {
             InputStream inputStream = inputSocket.getInputStream();
-            try {
-                OutputStream outputStream = outputSocket.getOutputStream();
-                try {
-                    byte[] buffer = new byte[4096];
-                    int read;
-                    do {
-                        read = inputStream.read(buffer);
-                        if (read > 0) {
-                            outputStream.write(buffer, 0, read);
-                            if (inputStream.available() < 1) {
-                                outputStream.flush();
-                            }
-                        }
-                    } while (read >= 0);
-                } finally {
-                    if (!outputSocket.isOutputShutdown()) {
-                        outputSocket.shutdownOutput();
-                    }
-                }
-            } finally {
-                if (!inputSocket.isInputShutdown()) {
-                    inputSocket.shutdownInput();
-                }
+            OutputStream outputStream = outputSocket.getOutputStream();
+            readData(inputStream, outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            shutDown(inputSocket, outputSocket);
+        }
+    }
+
+
+    private static void shutDown(Socket inputSocket, Socket outputSocket) {
+        try {
+            if (!outputSocket.isOutputShutdown()) {
+                outputSocket.shutdownOutput();
+            }
+            if (!inputSocket.isInputShutdown()) {
+                inputSocket.shutdownInput();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+    private static void readData(InputStream in, OutputStream out){
+        try {
+            byte[] buffer = new byte[2048];
+            int size;
+            while((size=in.read(buffer))>0){
+                out.write(buffer,0,size);
+            }
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Read a line message from the target socket
      *

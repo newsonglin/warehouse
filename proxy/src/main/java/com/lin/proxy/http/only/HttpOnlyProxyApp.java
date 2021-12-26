@@ -1,4 +1,4 @@
-package com.lin.proxy;
+package com.lin.proxy.http.only;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,9 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * This one works very well
+ * this one is a simple http proxy application. After execution, it will start a http proxy server in local,
+ * it doesn't support https
  */
-public class HttpProxy extends Thread {
+public class HttpOnlyProxyApp extends Thread {
     static public int CONNECT_RETRIES = 5;
     static public int CONNECT_PAUSE = 5;
     static public int TIMEOUT = 50;
@@ -29,7 +30,7 @@ public class HttpProxy extends Thread {
     }
 
     // Create a proxy thread on a given socket
-    public HttpProxy(Socket s) {
+    public HttpOnlyProxyApp(Socket s) {
         socket = s;
         start();
     }
@@ -222,9 +223,9 @@ public class HttpProxy extends Thread {
 
     // Very simple test main
     static public void main(String args[]) {
-        System.out.println("Starting proxy on port 808<BR>");
-        HttpProxy.log = System.out;
-        HttpProxy.logging = false;
-        HttpProxy.startProxy(9999, HttpProxy.class);
+        System.out.println("Starting proxy on port 9999<BR>");
+        HttpOnlyProxyApp.log = System.out;
+        HttpOnlyProxyApp.logging = false;
+        HttpOnlyProxyApp.startProxy(9999, HttpOnlyProxyApp.class);
     }
 }
