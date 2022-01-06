@@ -61,12 +61,14 @@ public class PhotoMaster {
 
             //Get photo taken date
             Date date = getTakenDate(file);
-            if(date==null){//taken date is null
-               date=getCreationDate(file);
+            if (date == null) {//taken date is null
+                Date createDate = getCreationDate(file);
+                Date modifyDate = new Date(file.lastModified());//last modified date
+                date=getEarlierDate(createDate,modifyDate);
             }
 
-            if(date==null) {
-                date = new Date(file.lastModified());//last modified date
+            if(date==null){
+                date=new Date(System.currentTimeMillis());
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -91,6 +93,17 @@ public class PhotoMaster {
 
     }
 
+    private Date getEarlierDate(Date date1, Date date2) {
+        if (date1 == null) {
+            return date2;
+        }
+
+        if (date2 == null) {
+            return date1;
+        }
+
+        return date1.compareTo(date2) > 0 ? date2 : date1;
+    }
     /**
      * 获取照片拍摄日期
      * @param file  当前照片
@@ -105,7 +118,7 @@ public class PhotoMaster {
             return directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL, TimeZone.getTimeZone("GMT+8:00"));
         }catch (Exception e) {
             //e.printStackTrace();
-            System.out.println("未能获取照片"+file.getName()+"的拍摄日期, 将会使用创建日期代替 ");
+            System.out.println("未能获取照片"+file.getName()+"的拍摄日期, 将会使用创建日期或者修改日期代替 ");
             return null;
         }
     }
