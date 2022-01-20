@@ -25,6 +25,7 @@
         <module>proxy</module>
         <module>mail</module>
         <module>sandbox</module>
+        <module>kafka</module>
     </modules>
     
 	<dependencies>
