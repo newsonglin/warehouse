@@ -1,4 +1,4 @@
-package com.lin.lambda.design.pattern.iterator;
+package com.lin.design.patterns.iterator;
 
 /**
  * The class in learn/exercises project
