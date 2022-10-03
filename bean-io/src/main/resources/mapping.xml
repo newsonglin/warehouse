@@ -1,6 +1,6 @@
 <beanio xmlns="http://www.beanio.org/2012/03">
     <stream name="employeeFile" format="csv">
-        <record name="header" minOccurs="1" maxOccurs="1" class="com.lin.beanio.Header">
+        <record name="header" minOccurs="0" maxOccurs="1" class="com.lin.beanio.Header">
             <field name="recordType" rid="true" literal="Header" />
             <field name="fileDate" format="MMddyyyy" />
         </record>
@@ -12,7 +12,7 @@
             <field name="salary" />
             <field name="hireDate" format="MMddyyyy" />
         </record>
-        <record name="trailer" minOccurs="1" maxOccurs="1" class="com.lin.beanio.Trailer">
+        <record name="trailer" minOccurs="0" maxOccurs="1" class="com.lin.beanio.Trailer">
             <field name="recordType" rid="true" literal="Trailer" />
             <field name="recordCount" />
         </record>
