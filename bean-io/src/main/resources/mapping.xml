@@ -1,10 +1,10 @@
 <beanio xmlns="http://www.beanio.org/2012/03">
     <stream name="employeeFile" format="csv">
-        <record name="header" minOccurs="0" maxOccurs="1" class="com.lin.beanio.Header">
+        <record name="header" minOccurs="0" maxOccurs="1" class="com.lin.io.Header">
             <field name="recordType" rid="true" literal="Header" />
             <field name="fileDate" format="MMddyyyy" />
         </record>
-        <record name="employee" minOccurs="0" maxOccurs="unbounded" class="com.lin.beanio.Employee">
+        <record name="employee" minOccurs="0" maxOccurs="unbounded" class="com.lin.io.Employee">
             <field name="recordType" rid="true" regex="[A-Z]" />
             <field name="firstName" />
             <field name="lastName" />
@@ -12,7 +12,7 @@
             <field name="salary" />
             <field name="hireDate" format="MMddyyyy" />
         </record>
-        <record name="trailer" minOccurs="0" maxOccurs="1" class="com.lin.beanio.Trailer">
+        <record name="trailer" minOccurs="0" maxOccurs="1" class="com.lin.io.Trailer">
             <field name="recordType" rid="true" literal="Trailer" />
             <field name="recordCount" />
         </record>

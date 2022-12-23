@@ -1,4 +1,4 @@
-package com.lin.beanio;
+package com.lin.io;
 
 import java.util.Date;
 
@@ -10,7 +10,6 @@ import java.util.Date;
  */
 public class Employee {
     String recordType;
-
     String firstName;
     String lastName;
     String title;

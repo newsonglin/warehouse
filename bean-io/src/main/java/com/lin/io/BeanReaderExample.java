@@ -1,4 +1,4 @@
-package com.lin.beanio;
+package com.lin.io;
 
 /**
  * BeanReaderExample in lin project.

@@ -1,4 +1,4 @@
-package com.lin.beanio;
+package com.lin.io;
 
 import org.beanio.BeanWriter;
 import org.beanio.StreamFactory;
@@ -36,12 +36,18 @@ public class BeanWriteExample {
         employees.add(employee1);
 
         // use a StreamFactory to create a BeanWriter
-        BeanWriter out = factory.createWriter("employees", new File("employee_out.csv"));
+        BeanWriter out = factory.createWriter("employeeFile", new File("employee_out.csv"));
+        Header header = new Header();
+        header.setRecordType("hh");
+        header.setFileDate(new Date());
+        out.write(header);
+//        out.write(header);
+
         // write an Employee object directly to the BeanWriter
 //        for(Employee e: employees){
 //            out.write(e);
 //        }
-        out.write(employee1);
+        //out.write(employee1);
         out.flush();
         out.close();
     }

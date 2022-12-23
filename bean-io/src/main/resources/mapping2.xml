@@ -1,27 +1,29 @@
 <beanio xmlns="http://www.beanio.org/2012/03"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.beanio.org/2012/03 http://www.beanio.org/2012/03/mapping.xsd">
-
     <stream name="employeeFile" format="csv">
-        <parser class="example.CustomCsvParserFactory">
-            <property name="recordLength" value="20" />
-            <property name="delimiter" value=";" />
-
-        </parser>
-
-        <record name="header" class="example.Header" order="1" occurs="1">
+<!--        <parser class="example.CustomCsvParserFactory">-->
+<!--            <property name="recordLength" value="20" />-->
+<!--            <property name="delimiter" value=";" />-->
+<!--        </parser>-->
+        <record name="header"
+                order="1"  minOccurs="1">
+            <field name="h1" default="名字YYYYYYYYYYYYYYYYYYYYYY" ignore="true" length="10"  padding="-" justify="left" />
+        </record>
+        <record name="header2" class="com.lin.io.Header" order="2" occurs="1">
             <field name="h1" default="名字" ignore="true" length="10"  padding="-" justify="left" />
             <field name="h2" default="姓氏" ignore="true" length="10"  padding="-" justify="left"/>
             <field name="h3" default="職稱" ignore="true" length="10"  padding="-" justify="left" />
             <field name="h4" default="薪水" ignore="true" length="10"  padding="-" justify="left"/>
             <field name="h5" default="雇用日期" ignore="true" length="10"  padding="-" justify="left"/>
         </record>
-        <record name="employee" class="example.Employee" order="2">
-            <field name="firstName" length="10"  padding="-" justify="left"/>
-            <field name="lastName" length="10" padding="-" justify="left"/>
-            <field name="title" length="10" />
-            <field name="salary" length="6" padding="0" justify="right" />
-            <field name="hireDate" length="8" format="MMddyyyy" />
-        </record>
+
+        <!--        <record name="ddd" class="com.lin.io.Employee" order="2">-->
+<!--            <field name="firstName" length="10"   justify="left"/>-->
+<!--            <field name="lastName" length="10" padding="-" justify="left"/>-->
+<!--            <field name="title" length="10" />-->
+<!--            <field name="salary" length="6" padding="0" justify="right" />-->
+<!--            <field name="hireDate" length="8" format="MMddyyyy" />-->
+<!--        </record>-->
     </stream>
 </beanio>

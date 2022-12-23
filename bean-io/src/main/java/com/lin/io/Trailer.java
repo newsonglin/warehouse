@@ -1,16 +1,14 @@
-package com.lin.beanio;
-
-import java.util.Date;
+package com.lin.io;
 
 /**
- * Header in lin project.
+ * Trailer in lin project.
  *
  * @author Songlin.Li <songlin.li@eisgroup.com>
  * @since 2018/9/21
  */
-public class Header {
+public class Trailer {
     String recordType;
-    Date fileDate;
+    int recordCount;
 
     public String getRecordType() {
         return recordType;
@@ -18,13 +16,5 @@ public class Header {
 
     public void setRecordType(String recordType) {
         this.recordType = recordType;
-    }
-
-    public Date getFileDate() {
-        return fileDate;
-    }
-
-    public void setFileDate(Date fileDate) {
-        this.fileDate = fileDate;
     }
 }
