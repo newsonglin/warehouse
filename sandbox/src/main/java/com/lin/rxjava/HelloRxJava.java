@@ -10,7 +10,7 @@ import io.reactivex.rxjava3.core.Observable;
  */
 public class HelloRxJava {
     public static void main(String[] args) {
-        Observable<String> source = Observable.create(emitter -> {
+     /*   Observable<String> source = Observable.create(emitter -> {
             emitter.onNext("hello");
             emitter.onNext("world");
         });
@@ -28,7 +28,9 @@ public class HelloRxJava {
 
         Observable.just(1,2,3,4,5,6,7,8,9)
         .scan((x,y)-> x+y).subscribe(System.out::println);
+*/
 
+        Observable.just(1,2,3,4,5,6,7,8,9).filter(i->i>5).toList().subscribe(l->System.out.println(l.size()));
 
 
     }

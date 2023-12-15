@@ -11,8 +11,6 @@
 
     <artifactId>utils</artifactId>
     <properties>
-        <maven.compiler.source>12</maven.compiler.source>
-        <maven.compiler.target>12</maven.compiler.target>
         <junit-jupiter.version>5.5.2</junit-jupiter.version>
 
     </properties>
