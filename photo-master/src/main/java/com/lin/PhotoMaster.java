@@ -54,13 +54,13 @@ public class PhotoMaster {
             File file = path.toFile();
 
             //Get photo taken place;
-//            GeoLocation location=getTakenPlace(file);
-//            if(location!=null) {
-//                System.out.println("Longitude:" + location.getLongitude() + " | Latitude:" + location.getLatitude());
-//            }
+            GeoLocation location=getTakenPlace(file);
+            if(location!=null) {
+                System.out.println("Longitude:" + location.getLongitude() + " | Latitude:" + location.getLatitude());
+            }
 
             //Get photo taken date
-            Date date = getTakenDate(file);
+/*            Date date = getTakenDate(file);
             if (date == null) {//taken date is null
                 Date createDate = getCreationDate(file);
                 Date modifyDate = new Date(file.lastModified());//last modified date
@@ -84,7 +84,7 @@ public class PhotoMaster {
 
 
             Files.move(path, targetPath, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("移动文件 "+file.getName()+" 到目录 "+targetPath.toString());
+            System.out.println("移动文件 "+file.getName()+" 到目录 "+targetPath.toString());*/
 
         } catch (Exception e) {
             System.out.println("Move file failed!");
