@@ -1,17 +1,15 @@
 package com.lin.utils.date;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 public class DateUtils {
 
@@ -402,11 +400,8 @@ public class DateUtils {
 
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
     static class DateRangeAdvance extends DateRange{
+
         public DateRangeAdvance(LocalDate start, LocalDate end) {
             super(start, end);
         }
@@ -418,10 +413,29 @@ public class DateUtils {
         }
     }
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
+
    static class DateWrap {
+        public DateWrap(LocalDate theDate, DateType type) {
+            this.theDate = theDate;
+            this.type = type;
+        }
+
+        public LocalDate getTheDate() {
+            return theDate;
+        }
+
+        public void setTheDate(LocalDate theDate) {
+            this.theDate = theDate;
+        }
+
+        public DateType getType() {
+            return type;
+        }
+
+        public void setType(DateType type) {
+            this.type = type;
+        }
+
         private LocalDate theDate;
         private DateType type;
         @Override

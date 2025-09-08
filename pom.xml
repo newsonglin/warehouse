@@ -27,7 +27,6 @@
         <module>sandbox</module>
         <module>kafka</module>
         <module>design-patterns</module>
-        <module>feign</module>
         <module>utils</module>
         <module>poi</module>
     </modules>
